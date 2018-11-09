@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+    <meta charset="UTF-8">
+    <title>The Pyschic Game</title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+</head>
+
+<body>
+
+    <div>
+        <h1 id="instructions">Choose a random letter to start playing</h1>
+
+        <p id="userGuess"></p>
+        <p id="computerGuess"></p>
+        <p id="wins"></p>
+        <p id="losses"></p>
+        <p id="remainingLives"></p>
+
+    </div>
+
+    <script type="text/javascript">
+        var possibleGuesses = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p",
+            "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+
+        var wins = 0;
+        var losses = 0;
+        var remainingLives = 10;
+
+
+
+        $(document).ready(function () {
+
+            var userGuess = document.getElementById("userGuess");
+            var computerGuess = document.getElementById("computerGuess");
+            var computerGuess = possibleGuesses[Math.floor(Math.random() * possibleGuesses.length)];
+            console.log(computerGuess);
+
+
+            document.onkeyup = function (event) {
+
+
+
+                var userGuess = event.key;
+                console.log(userGuess);
+
+
+
+
+
+                if (remainingLives > 1) {
+                    if (computerGuess == userGuess) {
+                        wins++;
+                    }
+
+                    else if (remainingLives == 0) {
+                        document.getElementById("computerGuess").innerHTML = "The computers guess was " + computerGuess;
+                        losses++;
+
+
+                    }
+
+                    else {
+                        remainingLives--;
+                    }
+
+                    document.getElementById("userGuess").innerHTML = "Your guess was " + userGuess;
+                    document.getElementById("wins").innerHTML = "Wins: " + wins;
+                    document.getElementById("losses").innerHTML = "Losses " + losses;
+                    document.getElementById("remainingLives").innerHTML = "You have " + remainingLives + " lives left";
+
+
+
+                }
+
+
+                else {
+                    document.getElementById("instructions").innerHTML = "You lost!"
+                    location.reload();
+
+                }
+
+
+
+            }
+
+
+        })
+
+    </script>
+
+</body>
+
+</html>
