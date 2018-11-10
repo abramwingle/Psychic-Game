@@ -12,13 +12,13 @@
 <body>
 
     <div>
-        <h1 id="instructions">Choose a random letter to start playing</h1>
-
-        <p id="userGuess"></p>
+        <h1 id="instructions">Try to guess the computer's letter!</h1>
         <p id="computerGuess"></p>
+        <p id="userGuess"></p>
         <p id="wins"></p>
         <p id="losses"></p>
         <p id="remainingLives"></p>
+        <p id="pastGuesses"></p>
 
     </div>
 
@@ -28,68 +28,62 @@
 
         var wins = 0;
         var losses = 0;
-        var remainingLives = 10;
+        var remainingLives = 11;
+        var computerGuess = document.getElementById("computerGuess");
+
+        var previousGuesses = [];
 
 
+        function reset() {
+            computerGuess = possibleGuesses[Math.floor(Math.random() * possibleGuesses.length)];
+            document.getElementById("computerGuess").innerHTML = "Type a letter to make a guess";
+            remainingLives = 10;
+            previousGuesses = [];
+
+
+
+
+
+        }
 
         $(document).ready(function () {
 
-            var userGuess = document.getElementById("userGuess");
-            var computerGuess = document.getElementById("computerGuess");
-            var computerGuess = possibleGuesses[Math.floor(Math.random() * possibleGuesses.length)];
-            console.log(computerGuess);
-
+            reset();
 
             document.onkeyup = function (event) {
 
+                var userGuess = event.key.toLowerCase();
 
+                if (remainingLives >= 1) {
 
-                var userGuess = event.key;
-                console.log(userGuess);
-
-
-
-
-
-                if (remainingLives > 1) {
                     if (computerGuess == userGuess) {
                         wins++;
-                    }
 
-                    else if (remainingLives == 0) {
-                        document.getElementById("computerGuess").innerHTML = "The computers guess was " + computerGuess;
-                        losses++;
-
-
+                        reset();
                     }
 
                     else {
                         remainingLives--;
+                        previousGuesses.push(userGuess);
+
+                        document.getElementById("pastGuesses").innerHTML = "Previous guesses: " + previousGuesses.join(", ");
+
                     }
 
-                    document.getElementById("userGuess").innerHTML = "Your guess was " + userGuess;
-                    document.getElementById("wins").innerHTML = "Wins: " + wins;
-                    document.getElementById("losses").innerHTML = "Losses " + losses;
-                    document.getElementById("remainingLives").innerHTML = "You have " + remainingLives + " lives left";
-
-
+                }
+                if (remainingLives == 0) {
+                    document.getElementById("computerGuess").innerHTML = "The computers guess was " + computerGuess;
+                    losses++;
+                    reset();
 
                 }
-
-
-                else {
-                    document.getElementById("instructions").innerHTML = "You lost!"
-                    location.reload();
-
-                }
-
-
+                document.getElementById("userGuess").innerHTML = "Your guess was " + userGuess;
+                document.getElementById("wins").innerHTML = "Wins: " + wins;
+                document.getElementById("losses").innerHTML = "Losses: " + losses;
+                document.getElementById("remainingLives").innerHTML = "You have " + remainingLives + " lives left";
 
             }
-
-
         })
-
     </script>
 
 </body>
